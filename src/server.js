@@ -10,6 +10,7 @@ import messageDao from "./daos/dbManager/message.dao.js";
 import UserViewsRouter from "./routes/users.views.router.js"
 import SessionRouter from "./routes/session.router.js"
 import MongoStore from 'connect-mongo';
+import session from "express-session";
 
 
 
@@ -54,10 +55,10 @@ Host.use(express.static(`${__dirname}/public`))
 Host.use(session({
   store: new MongoStore({
     mongooseConnection: mongoose.connection,
-    mongoUrl: "'mongodb+srv://Admin:1q2w3e@cluster0.n5ooq40.mongodb.net/?retryWrites=true&w=majority",
+    mongoUrl: "mongodb+srv://Admin:1q2w3e@cluster0.n5ooq40.mongodb.net/?retryWrites=true&w=majority",
     ttl: 10 * 60, 
   }),
-  secret: "Th1s1sA5ecret",
+  secret: "I1ik3C00k13s",
   resave: false,
   saveUninitialized: true,
 }));
@@ -81,5 +82,5 @@ Host.use(express.urlencoded({extended:true}));
 Host.use("/api/products", ProductRouter);
 Host.use("/api/carts", CartRouter);
 Host.use("/", ViewsRouter);
-app.use("/api/sessions",SessionRouter);
-app.use("/users",UserViewsRouter);
+Host.use("/api/sessions",SessionRouter);
+Host.use("/users",UserViewsRouter);
