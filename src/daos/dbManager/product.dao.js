@@ -40,6 +40,19 @@ class ProductDao {
       throw new Error(`Error while getting product by ID: ${error.message}`);
     }
   }
+
+  //trabajo 7:
+  async   findProducts(limit = 10, page = 1, query, sort) {
+    let consult = {}
+
+    if (query != undefined)
+    {
+      consult[query.split(":")[0]] = query.split(":")[1]
+    }
+
+    return await postModel.paginate(consult,{limit:limit,page:page,sort:sort == undefined ? {}: {price:Number(sort)}})
+  }
+
 }
 
 export default new ProductDao();
