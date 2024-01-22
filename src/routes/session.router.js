@@ -3,7 +3,15 @@ import userModel from "../models/user.model.js"
 
 const router = Router()
 
-router.post("/register", async (req, res)=>{
+const alreadyAuthenticatedMiddleware = (req, res, next) => {
+  if (req.session.user) {
+    return res.status(401).send({ status: "Error", error: "User already authenticated" });
+  }
+  next();
+};
+
+
+router.post("/register", alreadyAuthenticatedMiddleware, async (req, res) => {
     const {first_name, last_name, email,age,password} = req.body;
   
     const emailCheck = await userModel.findOne({email});
@@ -23,7 +31,7 @@ router.post("/register", async (req, res)=>{
     res.send({status:"success", msg:"Succes at creating user. ID: " + result.id})
 })
 
-router.post("/login",async(req,res)=>{
+router.post("/login", alreadyAuthenticatedMiddleware, async (req, res) => {
 
     const {email,password}=req.body;
     const user = await userModel.findOne({email,password})

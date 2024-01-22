@@ -3,11 +3,21 @@ import ProductDao from "../daos/dbManager/product.dao.js";
 
 const router = Router();
 
-router.get("/", (req, res) => {res.render("home.hbs");});
-router.get("/realtimeproducts", (req, res) => {res.render("products.hbs");})
-router.get("/chat",(req,res)=>{res.render("chat.hbs");});
+router.get("/", (req, res) => {res.render("login.hbs");});
+router.get("/realtimeproducts", (req, res) => {
+    if (!req.session.user) {
+        return res.redirect("/users/login");
+    }res.render("products.hbs");})
+router.get("/chat",(req,res)=>{
+    if (!req.session.user) {
+        return res.redirect("/users/login");
+    }res.render("chat.hbs");});
 
 router.get("/products", async (req,res) => {
+
+    if (!req.session.user) {
+        return res.redirect("/users/login");
+      }
     const { limit, page, query, sort } = req.query;
     const products = await ProductDao.findProducts(limit, page, query, sort);
 

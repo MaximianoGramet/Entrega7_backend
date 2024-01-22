@@ -4,7 +4,7 @@ import CartRouter from "./routes/carts.routes.js";
 import ViewsRouter from "./routes/views.routes.js";
 import { Server } from "socket.io";
 import handlebars from "express-handlebars";
-import __dirname from "./utils.js";
+import {__dirname} from "./utils.js";
 import mongoose from "mongoose";
 import messageDao from "./daos/dbManager/message.dao.js";
 import UserViewsRouter from "./routes/users.views.router.js"

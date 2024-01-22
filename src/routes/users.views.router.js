@@ -11,6 +11,9 @@ router.get("/register", (req,res)=>{
 })
 
 router.get("/", (req,res)=>{
+    if (!req.session.user) {
+        return res.redirect("/users/login");
+      }
     res.render('profile', {user:req.session.user})
 })
 
