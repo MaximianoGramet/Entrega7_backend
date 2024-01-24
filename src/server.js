@@ -11,7 +11,9 @@ import UserViewsRouter from "./routes/users.views.router.js"
 import SessionRouter from "./routes/session.router.js"
 import MongoStore from 'connect-mongo';
 import session from "express-session";
-
+import githubLoginRouter from "./routes/github-login.views.router.js"
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
 
 
 const Host = express();
@@ -20,7 +22,6 @@ const PORT= 8080;
 const httpServer = Host.listen(PORT,()=>{
     console.log(`Initiating server at port: ${PORT}...`);
 })
-
 mongoose.connect('mongodb+srv://Admin:1q2w3e@cluster0.n5ooq40.mongodb.net/?retryWrites=true&w=majority')
 .then(() => {
     console.log('Connection established');
@@ -62,7 +63,9 @@ Host.use(session({
   resave: false,
   saveUninitialized: true,
 }));
-
+initializePassport();
+Host.use(passport.initialize());
+Host.use(passport.session());
 io.on('connection', (socket) => {
     console.log('new client connected');
   
@@ -84,3 +87,4 @@ Host.use("/api/carts", CartRouter);
 Host.use("/", ViewsRouter);
 Host.use("/api/sessions",SessionRouter);
 Host.use("/users",UserViewsRouter);
+Host.use("/github", githubLoginRouter);
